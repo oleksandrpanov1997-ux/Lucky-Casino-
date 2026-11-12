@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucky Casino Lab</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;padding:24px 16px;
+background:#090711;color:white;
+font-family:Arial,sans-serif;text-align:center
+}
+h1{color:#c49aff;font-size:32px}
+p{color:#aaa}
+.card{
+max-width:420px;margin:35px auto;
+padding:25px;background:#191326;
+border:1px solid #7542a8;border-radius:22px
+}
+.balance{font-size:25px;color:#c49aff}
+.slots{display:flex;justify-content:center;gap:10px;margin:30px 0}
+.reel{
+width:85px;height:85px;background:#302442;
+border-radius:14px;display:grid;place-items:center;
+font-size:38px
+}
+button{
+background:#853fca;color:white;border:0;
+padding:15px 24px;border-radius:12px;
+font-size:16px
+}
+#result{min-height:35px;color:#d4b5ff}
+footer{font-size:12px;color:#777;margin-top:40px}
+</style>
+</head>
+<body>
+
+<h1>LUCKY CASINO LAB</h1>
+<p>PLAY · TEST · EXPLORE</p>
+
+<div class="card">
+<h2>🎰 Lucky Slots</h2>
+<p>Виртуальная игровая лаборатория</p>
+<div class="balance">
+Баланс: <span id="balance">10000</span>
+</div>
+
+<div class="slots">
+<div class="reel" id="r1">🍒</div>
+<div class="reel" id="r2">⭐</div>
+<div class="reel" id="r3">💎</div>
+</div>
+
+<button onclick="spin()">ИГРАТЬ В ДЕМО</button>
+<p id="result">Добро пожаловать!</p>
+</div>
+
+<footer>
+LUCKY CASINO LAB<br>
+DEMO ONLY · VIRTUAL COINS
+</footer>
+
+<script>
+let balance=10000;
+const symbols=["🍒","⭐","💎","🍀","7️⃣"];
+
+function spin(){
+if(balance<10){
+document.getElementById("result").textContent="Баланс закончился!";
+return;
+}
+balance-=10;
+let result=[];
+
+["r1","r2","r3"].forEach(id=>{
+let s=symbols[Math.floor(Math.random()*symbols.length)];
+result.push(s);
+document.getElementById(id).textContent=s;
+});
+
+if(result[0]===result[1]&&result[1]===result[2]){
+balance+=100;
+document.getElementById("result").textContent="Три одинаковых символа! +100";
+}else{
+document.getElementById("result").textContent="Попробуй ещё раз!";
+}
+
+document.getElementById("balance").textContent=balance;
+}
+</script>
+</body>
+</html>
