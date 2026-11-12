@@ -1,93 +1,563 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lucky Casino Lab</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090711">
+<title>LUCKY CASINO LAB</title>
 <style>
+:root{
+ --bg:#090711;--panel:#151020;--panel2:#20172e;
+ --purple:#a66bff;--gold:#eac77b;
+ --muted:#a99bb9;--line:#352744;
+}
 *{box-sizing:border-box}
 body{
-margin:0;padding:24px 16px;
-background:#090711;color:white;
-font-family:Arial,sans-serif;text-align:center
+ margin:0;background:var(--bg);color:#fff;
+ font-family:Inter,Arial,sans-serif;
+ min-height:100vh;
+ background-image:radial-gradient(ellipse at 50% -15%,#39205a 0,transparent 45%);
 }
-h1{color:#c49aff;font-size:32px}
-p{color:#aaa}
-.card{
-max-width:420px;margin:35px auto;
-padding:25px;background:#191326;
-border:1px solid #7542a8;border-radius:22px
+button{font:inherit;cursor:pointer}
+header{
+ position:sticky;top:0;z-index:5;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:16px max(18px,calc((100% - 1100px)/2));
+ background:#0c0915ee;backdrop-filter:blur(15px);
+ border-bottom:1px solid var(--line);
 }
-.balance{font-size:25px;color:#c49aff}
-.slots{display:flex;justify-content:center;gap:10px;margin:30px 0}
+.logo{font-weight:900;font-size:21px;letter-spacing:2px;color:#d1aaff}
+.logo span{color:var(--gold)}
+.demo{
+ color:#a9e7be;border:1px solid #34724b;
+ border-radius:30px;padding:7px 11px;font-size:11px;
+}
+main{max-width:1100px;margin:auto;padding:20px 16px 60px}
+.hero{
+ text-align:center;padding:35px 10px 25px;
+}
+.eyebrow{color:var(--gold);letter-spacing:4px;font-size:11px}
+h1{
+ font-size:clamp(35px,8vw,65px);margin:13px 0;
+ letter-spacing:2px;
+ background:linear-gradient(110deg,#fff,#c39aff,#f5d895);
+ -webkit-background-clip:text;color:transparent;
+}
+.hero p{color:var(--muted);font-size:14px}
+.hero-art{
+ max-width:850px;margin:25px auto;
+ min-height:155px;border-radius:22px;overflow:hidden;
+ border:1px solid #65428a;
+ background:
+ radial-gradient(ellipse at 50% 110%,#813cc9aa,transparent 50%),
+ linear-gradient(120deg,#21132f,#100c1b 60%,#342044);
+ display:grid;place-items:center;position:relative;
+}
+.hero-art:before{
+ content:"♛";font-size:110px;color:#d4b1ff;
+ text-shadow:0 0 30px #a66bff;
+ animation:float 3s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-9px)}}
+.wallet{
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap;
+ background:linear-gradient(110deg,#21162f,#171020);
+ border:1px solid #563773;border-radius:17px;
+ padding:19px;margin:22px auto;max-width:850px;
+}
+.small{font-size:11px;color:var(--muted)}
+.money{font-size:29px;font-weight:800;color:var(--gold);margin-top:5px}
+.lc{font-size:12px;color:#bca9d0}
+.outline,.primary{
+ border-radius:11px;padding:12px 17px;
+ color:white;border:1px solid #7953a3;background:#281b39;
+}
+.primary{
+ background:linear-gradient(120deg,#984ee7,#6332a8);
+ border:0;box-shadow:0 5px 20px #7d36c744;
+}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.section-title{
+ display:flex;justify-content:space-between;
+ align-items:center;margin:32px 0 16px;
+}
+.section-title h2{font-size:19px;margin:0}
+.games{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.game-card{
+ text-align:left;padding:12px;border-radius:15px;
+ border:1px solid var(--line);background:var(--panel);
+ color:white;transition:.2s;
+}
+.game-card.active,.game-card:hover{
+ border-color:var(--purple);background:#241632;
+ box-shadow:0 0 18px #9a53ff20;
+}
+.game-icon{
+ height:85px;display:grid;place-items:center;
+ border-radius:11px;margin-bottom:10px;
+ font-size:43px;
+ background:radial-gradient(circle,#563477,#21162f 70%);
+}
+.game-card b{font-size:13px}
+.game-card small{display:block;color:var(--muted);margin-top:5px}
+.play-area{
+ margin-top:22px;background:linear-gradient(145deg,#1b1428,#110d1a);
+ border:1px solid #53356d;border-radius:20px;
+ padding:22px 15px;text-align:center;min-height:320px;
+}
+.play-area h2{margin:0 0 7px;font-size:23px}
+.description{font-size:12px;color:var(--muted)}
+.game-display{
+ display:flex;justify-content:center;align-items:center;
+ gap:10px;margin:25px 0;
+}
 .reel{
-width:85px;height:85px;background:#302442;
-border-radius:14px;display:grid;place-items:center;
-font-size:38px
+ width:clamp(65px,20vw,95px);height:85px;
+ display:grid;place-items:center;border-radius:14px;
+ background:linear-gradient(145deg,#352448,#21182f);
+ border:1px solid #69448b;font-size:40px;
+ box-shadow:inset 0 0 20px #0008;
 }
-button{
-background:#853fca;color:white;border:0;
-padding:15px 24px;border-radius:12px;
-font-size:16px
+.spinning{animation:shake .12s infinite alternate}
+@keyframes shake{to{transform:translateY(-5px)}}
+.result{min-height:28px;color:#d6b2ff;font-size:14px;margin:15px 0}
+.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.bet{
+ display:flex;justify-content:center;align-items:center;
+ gap:12px;margin:15px;
 }
-#result{min-height:35px;color:#d4b5ff}
-footer{font-size:12px;color:#777;margin-top:40px}
+.bet button{width:37px;height:37px;padding:0;border-radius:9px}
+.bet strong{min-width:60px;color:var(--gold)}
+.wheel{
+ width:190px;height:190px;border-radius:50%;
+ margin:20px auto;border:7px solid #d4b66e;
+ background:conic-gradient(
+ #b52235 0 9.73%,#17151c 9.73% 19.46%,
+ #b52235 19.46% 29.19%,#17151c 29.19% 38.92%,
+ #b52235 38.92% 48.65%,#17151c 48.65% 58.38%,
+ #b52235 58.38% 68.11%,#17151c 68.11% 77.84%,
+ #b52235 77.84% 87.57%,#17151c 87.57% 97.3%,
+ #167b49 97.3% 100%);
+ box-shadow:0 0 30px #9d56ff44;
+ display:grid;place-items:center;
+ transition:transform 2s cubic-bezier(.15,.7,.2,1);
+}
+.wheel span{
+ background:#171020;border:2px solid var(--gold);
+ border-radius:50%;width:66px;height:66px;
+ display:grid;place-items:center;font-size:25px;
+}
+.cards{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:25px 0}
+.playing-card{
+ width:58px;height:82px;border-radius:8px;
+ background:#f7f1e9;color:#171020;
+ display:grid;place-items:center;font-size:23px;
+ box-shadow:0 4px 12px #0007;
+}
+.red{color:#d52e48}
+.dice{font-size:75px;filter:drop-shadow(0 0 15px #a66bff)}
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:10px;margin-top:22px;
+}
+.stat{
+ background:var(--panel);border:1px solid var(--line);
+ padding:15px 8px;border-radius:13px;text-align:center;
+}
+.stat b{display:block;color:var(--gold);font-size:20px}
+.stat small{color:var(--muted);font-size:10px}
+.history{
+ margin-top:22px;background:var(--panel);
+ border:1px solid var(--line);border-radius:15px;padding:17px;
+}
+.history-row{
+ display:flex;justify-content:space-between;gap:10px;
+ border-bottom:1px solid var(--line);padding:11px 0;
+ font-size:12px;
+}
+.win{color:#82dca1}.loss{color:#f28c9b}
+footer{
+ text-align:center;color:#786b85;font-size:11px;
+ padding:30px 10px;line-height:1.9;
+}
+#toast{
+ position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+ background:#342044;color:white;padding:12px 20px;
+ border:1px solid #9660c4;border-radius:12px;
+ opacity:0;pointer-events:none;transition:.3s;z-index:10;
+}
+#toast.show{opacity:1}
+@media(max-width:600px){
+ main{padding:10px 12px 40px}
+ .games{grid-template-columns:repeat(2,1fr);gap:9px}
+ .game-icon{height:68px}
+ .play-area{padding:20px 10px}
+ .wallet{padding:15px}
+ .stats{gap:6px}
+}
 </style>
 </head>
 <body>
 
-<h1>LUCKY CASINO LAB</h1>
-<p>PLAY · TEST · EXPLORE</p>
+<header>
+ <div class="logo">LUCKY<span> LAB</span></div>
+ <div class="demo">● DEMO MODE</div>
+</header>
 
-<div class="card">
-<h2>🎰 Lucky Slots</h2>
-<p>Виртуальная игровая лаборатория</p>
-<div class="balance">
-Баланс: <span id="balance">10000</span>
-</div>
+<main>
+ <section class="hero">
+  <div class="eyebrow">WELCOME TO THE LAB</div>
+  <h1>LUCKY WORLD</h1>
+  <p>Explore games. Test your luck. Enjoy the experience.</p>
+  <div class="hero-art"></div>
+ </section>
 
-<div class="slots">
-<div class="reel" id="r1">🍒</div>
-<div class="reel" id="r2">⭐</div>
-<div class="reel" id="r3">💎</div>
-</div>
+ <section class="wallet">
+  <div>
+   <div class="small">YOUR VIRTUAL BALANCE</div>
+   <div class="money"><span id="balance">10,000</span> <span class="lc">LC</span></div>
+   <div class="small">Virtual coins · No cash value</div>
+  </div>
+  <button class="outline" onclick="bonus()">🎁 Free demo coins</button>
+ </section>
 
-<button onclick="spin()">ИГРАТЬ В ДЕМО</button>
-<p id="result">Добро пожаловать!</p>
-</div>
+ <div class="section-title">
+  <h2>🎮 Explore Games</h2>
+  <span class="small">4 GAMES</span>
+ </div>
+
+ <section class="games">
+  <button class="game-card active" data-game="slots" onclick="selectGame('slots')">
+   <div class="game-icon">🎰</div>
+   <b>Lucky Slots</b><small>Classic reels</small>
+  </button>
+  <button class="game-card" data-game="roulette" onclick="selectGame('roulette')">
+   <div class="game-icon">🎡</div>
+   <b>Roulette</b><small>European wheel</small>
+  </button>
+  <button class="game-card" data-game="blackjack" onclick="selectGame('blackjack')">
+   <div class="game-icon">🃏</div>
+   <b>Blackjack</b><small>Card challenge</small>
+  </button>
+  <button class="game-card" data-game="dice" onclick="selectGame('dice')">
+   <div class="game-icon">🎲</div>
+   <b>Lucky Dice</b><small>Dice challenge</small>
+  </button>
+ </section>
+
+ <section class="play-area" id="game">
+  <h2>🎰 Lucky Slots</h2>
+  <div class="description">Match three symbols in the virtual game</div>
+  <div class="game-display">
+   <div class="reel" id="r1">🍒</div>
+   <div class="reel" id="r2">⭐</div>
+   <div class="reel" id="r3">💎</div>
+  </div>
+  <div class="bet">
+   <button class="outline" onclick="changeBet(-10)">−</button>
+   <strong id="bet">10 LC</strong>
+   <button class="outline" onclick="changeBet(10)">+</button>
+  </div>
+  <button class="primary" id="action" onclick="play()">SPIN NOW</button>
+  <div class="result" id="result">Welcome to Lucky Slots!</div>
+ </section>
+
+ <div class="section-title"><h2>📊 Your Statistics</h2></div>
+ <section class="stats">
+  <div class="stat"><b id="played">0</b><small>ROUNDS</small></div>
+  <div class="stat"><b id="wins">0</b><small>WINS</small></div>
+  <div class="stat"><b id="best">0</b><small>BEST RESULT</small></div>
+ </section>
+
+ <section class="history">
+  <div class="section-title" style="margin:0 0 8px">
+   <h2>📜 Recent activity</h2>
+   <button class="outline" onclick="clearHistory()" style="padding:7px 10px;font-size:11px">Clear</button>
+  </div>
+  <div id="history"><div class="small">Your demo game history will appear here.</div></div>
+ </section>
+</main>
 
 <footer>
-LUCKY CASINO LAB<br>
-DEMO ONLY · VIRTUAL COINS
+ <b>LUCKY CASINO LAB</b><br>
+ EXPLORE · PLAY · DISCOVER<br>
+ DEMONSTRATION SOFTWARE ONLY<br>
+ Virtual coins have no monetary value.
+ No real-money gambling, deposits or withdrawals.
 </footer>
+<div id="toast"></div>
 
 <script>
-let balance=10000;
-const symbols=["🍒","⭐","💎","🍀","7️⃣"];
-
-function spin(){
-if(balance<10){
-document.getElementById("result").textContent="Баланс закончился!";
-return;
+const $=id=>document.getElementById(id);
+const symbols=["🍒","⭐","💎","🍀","7️⃣","🔔"];
+const suits=["♠","♥","♦","♣"];
+let state={
+ balance:10000,bet:10,played:0,wins:0,best:0,
+ history:[],game:"slots",sound:false,hand:[],dealer:[],
+ finished:false
+};
+function save(){
+ try{localStorage.setItem("luckyLabDemo",JSON.stringify(state))}catch(e){}
 }
-balance-=10;
-let result=[];
-
-["r1","r2","r3"].forEach(id=>{
-let s=symbols[Math.floor(Math.random()*symbols.length)];
-result.push(s);
-document.getElementById(id).textContent=s;
-});
-
-if(result[0]===result[1]&&result[1]===result[2]){
-balance+=100;
-document.getElementById("result").textContent="Три одинаковых символа! +100";
-}else{
-document.getElementById("result").textContent="Попробуй ещё раз!";
+function load(){
+ try{
+  const s=JSON.parse(localStorage.getItem("luckyLabDemo"));
+  if(s && Number.isFinite(s.balance) && s.balance>=0){
+   state={...state,...s};
+  }
+ }catch(e){}
 }
-
-document.getElementById("balance").textContent=balance;
+function update(){
+ $("balance").textContent=state.balance.toLocaleString("en-US");
+ $("bet").textContent=state.bet+" LC";
+ $("played").textContent=state.played;
+ $("wins").textContent=state.wins;
+ $("best").textContent=state.best;
+ $("history").innerHTML=state.history.length?
+ state.history.slice(0,8).map(h=>
+ `<div class="history-row"><span>${h.name}</span><b class="${h.amount>=0?'win':'loss'}">${h.amount>=0?'+':''}${h.amount} LC</b></div>`
+ ).join(""):'<div class="small">No games played yet.</div>';
+ save();
 }
+function toast(t){
+ $("toast").textContent=t;
+ $("toast").classList.add("show");
+ setTimeout(()=>$("toast").classList.remove("show"),1800);
+}
+function tone(freq=440){
+ if(!state.sound)return;
+ try{
+  const c=new(window.AudioContext||window.webkitAudioContext)();
+  const o=c.createOscillator(),g=c.createGain();
+  o.frequency.value=freq;g.gain.value=.035;
+  o.connect(g);g.connect(c.destination);
+  o.start();o.stop(c.currentTime+.12);
+  o.onended=()=>c.close();
+ }catch(e){}
+}
+function changeBet(n){
+ state.bet=Math.max(10,Math.min(1000,state.bet+n));
+ update();
+}
+function pay(cost){
+ if(state.balance<cost){toast("Not enough demo coins!");return false}
+ state.balance-=cost;return true;
+}
+function finish(name,profit){
+ state.played++;
+ if(profit>0)state.wins++;
+ state.best=Math.max(state.best,profit);
+ state.history.unshift({name,amount:profit});
+ state.history=state.history.slice(0,30);
+ update();
+}
+function bonus(){
+ state.balance+=500;
+ update();
+ toast("+500 virtual demo coins!");
+}
+function selectGame(g){
+ state.game=g;
+ document.querySelectorAll(".game-card").forEach(b=>
+ b.classList.toggle("active",b.dataset.game===g));
+ render();
+}
+function render(){
+ const box=$("game");
+ if(state.game==="slots"){
+  box.innerHTML=`
+  <h2>🎰 Lucky Slots</h2>
+  <div class="description">Match three symbols in the virtual game</div>
+  <div class="game-display">
+  <div class="reel" id="r1">🍒</div>
+  <div class="reel" id="r2">⭐</div>
+  <div class="reel" id="r3">💎</div></div>
+  ${betControls()}
+  <button class="primary" id="action" onclick="play()">SPIN NOW</button>
+  <div class="result" id="result">Try your luck!</div>`;
+ }
+ if(state.game==="roulette"){
+  box.innerHTML=`
+  <h2>🎡 European Roulette</h2>
+  <div class="description">Choose red, black or green zero</div>
+  <div class="wheel" id="wheel"><span>🎡</span></div>
+  ${betControls()}
+  <div class="controls">
+  <button class="outline" onclick="roulette('red')">🔴 RED</button>
+  <button class="outline" onclick="roulette('black')">⚫ BLACK</button>
+  <button class="outline" onclick="roulette('green')">🟢 ZERO</button>
+  </div><div class="result" id="result">Choose a colour!</div>`;
+ }
+ if(state.game==="dice"){
+  box.innerHTML=`
+  <h2>🎲 Lucky Dice</h2>
+  <div class="description">Roll two virtual dice. Match the target!</div>
+  <div class="game-display">
+  <div class="dice" id="d1">⚀</div>
+  <div class="dice" id="d2">⚄</div></div>
+  ${betControls()}
+  <button class="primary" onclick="dice()">ROLL DICE</button>
+  <div class="result" id="result">Two dice. One challenge.</div>`;
+ }
+ if(state.game==="blackjack"){
+  box.innerHTML=`
+  <h2>🃏 Blackjack</h2>
+  <div class="description">Try to reach 21 without going over</div>
+  <div class="small">DEALER</div>
+  <div class="cards" id="dealerCards"></div>
+  <div class="small">YOU</div>
+  <div class="cards" id="playerCards"></div>
+  ${betControls()}
+  <div class="controls">
+  <button class="primary" onclick="deal()">DEAL</button>
+  <button class="outline" id="hit" onclick="hit()" disabled>HIT</button>
+  <button class="outline" id="stand" onclick="stand()" disabled>STAND</button>
+  </div><div class="result" id="result">Start a new hand!</div>`;
+ }
+ update();
+}
+function betControls(){
+ return `<div class="bet">
+ <button class="outline" onclick="changeBet(-10)">−</button>
+ <strong id="bet">${state.bet} LC</strong>
+ <button class="outline" onclick="changeBet(10)">+</button>
+ </div>`;
+}
+function play(){
+ const cost=state.bet;
+ if(!pay(cost))return;
+ const reels=[$("r1"),$("r2"),$("r3")];
+ reels.forEach(r=>r.classList.add("spinning"));
+ $("action").disabled=true;
+ let ticks=0;
+ const timer=setInterval(()=>{
+  reels.forEach(r=>r.textContent=symbols[Math.floor(Math.random()*symbols.length)]);
+  tone(300+ticks*30);
+  ticks++;
+  if(ticks>=12){
+   clearInterval(timer);
+   const result=reels.map(r=>symbols[Math.floor(Math.random()*symbols.length)]);
+   reels.forEach((r,i)=>{r.textContent=result[i];r.classList.remove("spinning")});
+   let payout=0;
+   if(result.every(x=>x===result[0]))payout=cost*10;
+   else if(new Set(result).size===2)payout=cost*2;
+   state.balance+=payout;
+   finish("Lucky Slots",payout-cost);
+   $("result").textContent=payout?
+   "✨ Match! You received "+payout+" LC":
+   "No match this time. Try again!";
+   $("action").disabled=false;
+   tone(payout?700:200);
+  }
+ },90);
+}
+const reds=[1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+function roulette(color){
+ const cost=state.bet;
+ if(!pay(cost))return;
+ const wheel=$("wheel");
+ wheel.style.transform=`rotate(${1800+Math.random()*720}deg)`;
+ $("result").textContent="The wheel is spinning...";
+ setTimeout(()=>{
+  const n=Math.floor(Math.random()*37);
+  const actual=n===0?"green":reds.includes(n)?"red":"black";
+  const payout=actual===color?(color==="green"?cost*36:cost*2):0;
+  state.balance+=payout;
+  finish("Roulette · "+n,payout-cost);
+  $("result").textContent=`Number ${n} · ${actual.toUpperCase()} · ${payout?"+"+payout+" LC":"No match"}`;
+  tone(payout?700:180);
+ },1900);
+}
+function dice(){
+ const cost=state.bet;
+ if(!pay(cost))return;
+ let a=1,b=1,t=0;
+ const timer=setInterval(()=>{
+  a=1+Math.floor(Math.random()*6);
+  b=1+Math.floor(Math.random()*6);
+  $("d1").textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][a];
+  $("d2").textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][b];
+  t++;
+  if(t===12){
+   clearInterval(timer);
+   const payout=a===b?cost*5:a+b>=9?cost*2:0;
+   state.balance+=payout;
+   finish("Lucky Dice",payout-cost);
+   $("result").textContent=`${a+b} points · ${payout?"+"+payout+" LC":"No match"}`;
+   tone(payout?700:180);
+  }
+ },100);
+}
+function card(){
+ const rank=1+Math.floor(Math.random()*13);
+ const suit=suits[Math.floor(Math.random()*4)];
+ const label=rank===1?"A":rank===11?"J":rank===12?"Q":rank===13?"K":rank;
+ return {rank,suit,label};
+}
+function score(cards){
+ let total=0,aces=0;
+ cards.forEach(c=>{
+  total+=c.rank===1?11:Math.min(c.rank,10);
+  if(c.rank===1)aces++;
+ });
+ while(total>21&&aces){total-=10;aces--}
+ return total;
+}
+function showCards(){
+ $("playerCards").innerHTML=state.hand.map(c=>
+ `<div class="playing-card ${c.suit==="♥"||c.suit==="♦"?"red":""}">${c.label}${c.suit}</div>`).join("");
+ $("dealerCards").innerHTML=state.dealer.map(c=>
+ `<div class="playing-card ${c.suit==="♥"||c.suit==="♦"?"red":""}">${c.label}${c.suit}</div>`).join("");
+}
+function deal(){
+ if(!state.finished && state.hand.length){toast("Finish your current hand first");return}
+ if(!pay(state.bet))return;
+ state.hand=[card(),card()];
+ state.dealer=[card(),card()];
+ state.finished=false;
+ showCards();
+ $("hit").disabled=false;$("stand").disabled=false;
+ $("result").textContent="Your score: "+score(state.hand);
+ if(score(state.hand)===21)stand();
+}
+function hit(){
+ if(state.finished||!state.hand.length)return;
+ state.hand.push(card());showCards();
+ const s=score(state.hand);
+ $("result").textContent="Your score: "+s;
+ if(s>21){
+  state.finished=true;
+  $("hit").disabled=true;$("stand").disabled=true;
+  finish("Blackjack", -state.bet);
+  $("result").textContent="Bust! You went over 21.";
+ }
+}
+function stand(){
+ if(state.finished||!state.hand.length)return;
+ while(score(state.dealer)<17)state.dealer.push(card());
+ const p=score(state.hand),d=score(state.dealer);
+ let payout=0,msg="";
+ if(p>21){msg="Bust!";payout=0}
+ else if(d>21||p>d){payout=state.bet*2;msg="You win!"}
+ else if(p===d){payout=state.bet;msg="Push! Your demo stake returned."}
+ else{msg="Dealer wins."}
+ state.balance+=payout;
+ state.finished=true;
+ $("hit").disabled=true;$("stand").disabled=true;
+ showCards();
+ finish("Blackjack",payout-state.bet);
+ $("result").textContent=`${msg} You: ${p} · Dealer: ${d}`;
+}
+function clearHistory(){
+ state.history=[];update();toast("History cleared");
+}
+load();
+render();
 </script>
 </body>
 </html>
